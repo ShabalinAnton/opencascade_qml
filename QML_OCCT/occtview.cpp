@@ -146,7 +146,7 @@ void occtRenderer::Init()
 
      // Create AISInteractiveContext
      myContext = new AIS_InteractiveContext(myViewer);
-     myContext->SetDisplayMode(AIS_Shaded);
+     myContext->SetDisplayMode(AIS_Shaded, Standard_True);
 
      makeTestCone();
 }
@@ -167,8 +167,8 @@ void occtRenderer::makeTestCone()
 
     anAisCone->SetColor(Quantity_NOC_CHOCOLATE);
 
-    myContext->Display(anAisReducer);
-    myContext->Display(anAisCone);
+    myContext->Display(anAisReducer, Standard_True);
+    myContext->Display(anAisCone, Standard_True);
 
     myView->FitAll();
 }

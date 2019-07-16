@@ -42,7 +42,7 @@ public:
      virtual Standard_Boolean IsMapped() const override { return Standard_True; }
 
      //! Returns The Window RATIO equal to the physical WIDTH/HEIGHT dimensions
-     virtual Quantity_Ratio Ratio() const override { return 1.0; }
+     virtual Standard_Real Ratio() const override { return 1.0; }
 
      //! Returns The Window POSITION in PIXEL
      virtual void Position (Standard_Integer& theX1,

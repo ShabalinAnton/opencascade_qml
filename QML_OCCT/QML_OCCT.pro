@@ -58,6 +58,9 @@ win32 {
 
     # Determine 32 / 64 bit and debug / release build
     !contains(QMAKE_TARGET.arch, x86_64) {
+		ARCH_BITS_SIZE = 32
+		DEFINES += _OCC32
+
         CONFIG(debug, debug|release) {
             message("Debug 32 build")
             LIBS += -L$$(CASROOT)/win32/$$compiler/libd
@@ -68,6 +71,9 @@ win32 {
         }
     }
     else {
+		ARCH_BITS_SIZE = 64
+		DEFINES += _OCC64
+
         CONFIG(debug, debug|release) {
             message("Debug 64 build")
             LIBS += -L$$(CASROOT)/win64/$$compiler/libd
@@ -79,6 +85,12 @@ win32 {
     }
 }
 
+isEmpty(OCCT_INCLUDE_DIR):OCCT_INCLUDE_DIR = $$(CSF_OCCTIncludePath)
+isEmpty(OCCT_LIBRARY_DIR):OCCT_LIBRARY_DIR = $$(CSF_OCCTLibPath)
+
+INCLUDEPATH += $$OCCT_INCLUDE_DIR
+
+LIBS += "$$join(OCCT_LIBRARY_DIR, " -L", -L)"
 
 LIBS +=         \
     -lTKernel   \
