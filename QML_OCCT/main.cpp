@@ -1,19 +1,17 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-
 #include <QtQuick/QQuickView>
-#include "occtview.h"
+
+#include "OcctView.h"
 
 int main(int argc, char *argv[])
 {
-    QGuiApplication app(argc, argv);
+	QGuiApplication app(argc, argv);
 
-    qmlRegisterType<occtView>("OCCTUnderQML", 1, 0, "OCCTView");
+    qmlRegisterType<occtView>("OpenCascade", 7, 3, "OcctView");
 
-    QQuickView view;
-    view.setResizeMode(QQuickView::SizeRootObjectToView);
-    view.setSource(QUrl("qrc:///main.qml"));
-    view.show();
+	QQmlApplicationEngine engine;
+	engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
     return app.exec();
 }
