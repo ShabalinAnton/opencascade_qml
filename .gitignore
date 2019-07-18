@@ -6,6 +6,7 @@
 /*/x64
 /*/x86
 
+*.sln
 *.vcxproj
 *.vcxproj.*
 
