@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
 {
 	QGuiApplication app(argc, argv);
 
-    qmlRegisterType<occtView>("OpenCascade", 7, 3, "OcctView");
+    qmlRegisterType<OcctView>("OpenCascade", 7, 3, "OcctView");
 
 	QQmlApplicationEngine engine;
 	engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
