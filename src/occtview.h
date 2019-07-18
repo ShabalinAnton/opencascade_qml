@@ -2,110 +2,64 @@
 #define OCCTVIEW_H
 
 #include <QtQuick/QQuickItem>
-#include <QtQuick/QQuickFramebufferObject>
-#include <QtGui/QOpenGLFunctions>
-#include <QMutex>
-#include <QPoint>
+#include <QtQuick/QQuickWindow.h>
+#include <QMutex.h>
 
+#include <OpenGl_GraphicDriver.hxx>
+#include <V3d_View.hxx>
+#include <V3d_Viewer.hxx>
 #include <AIS_InteractiveContext.hxx>
+#include <Graphic3d_Vec2.hxx>
+
+#include <Aspect_Drawable.hxx>
+#include <Aspect_DisplayConnection.hxx>
 
 //Renderer class
-class occtRenderer : public QObject, protected QOpenGLFunctions
+class OcctView : public QQuickItem
 {
-    Q_OBJECT
-public:
+	Q_OBJECT
 
-    enum ContextAction
-    {
-        NoAction, Panning, Rotation, Zooming
-    };
-
-
-    occtRenderer()
-    {
-        m_isInit = false;
-        m_action = NoAction;
-    }
-
-    ~occtRenderer(){}
-
-    void setViewportSize(const QSize &size)
-    {
-        m_viewportSize = size;
-        resize();
-    }
-
-    void setWindow(QQuickWindow *window) { m_window = window; }
-
-    void resize();
-
-    void mouseMove(int x, int y);
-
-    void onRightButtonPressed(int x, int y);
-    void onRightButtonReleased(int x, int y);
-
-    void onMiddleButtonPressed(int x, int y);
-    void onMiddleButtonReleased(int x, int y);
-
-    void onWheel(int angleDelta);
-
-protected:
-    void Init();
-    void makeTestCone();
-
-public slots:
-    void paint();
-
+	// Member fields.
 private:
-    QSize m_viewportSize;
-    QQuickWindow *m_window;
-    bool m_isInit;
-    ContextAction m_action;
+	Handle(V3d_Viewer)				m_viewer { nullptr };
+	Handle(V3d_View)				m_view { nullptr };
+	Handle(AIS_InteractiveContext)	m_context { nullptr };
 
-    QMutex m_mutex;        //mutex for interconnection with rendering thread
-    QPoint m_startPoint, m_endPoint, m_cursor;
+	QSize							m_viewportSize;
+	QPoint							m_viewportPos;
+	QMutex							m_mutex;
 
-
-    //OCC viewer.
-    Handle(V3d_Viewer) myViewer;
-
-    //OCC view.
-    Handle(V3d_View) myView;
-
-    //OCC context.
-    Handle(AIS_InteractiveContext) myContext;
-
-};
-
-//View item
-class occtView : public QQuickItem
-{
-    Q_OBJECT
-
+	// Properties.
 public:
-    occtView();
 
-    void setSize(QSize size);
+	// Constructor/Destructor.
+public:
+	explicit OcctView(QQuickItem* parent = nullptr);
 
-public slots:
-    void sync();
-    void cleanup();
+	// Signals.
+signals:
 
-    Q_INVOKABLE void mouseMove(int x, int y);
-
-    Q_INVOKABLE void onRightButtonPressed(int x, int y);
-    Q_INVOKABLE void onRightButtonReleased(int x, int y);
-
-    Q_INVOKABLE void onMiddleButtonPressed(int x, int y);
-    Q_INVOKABLE void onMiddleButtonReleased(int x, int y);
-
-    Q_INVOKABLE void onWheel(int angleDelta);
-
+	// Slots.
 private slots:
-    void handleWindowChanged(QQuickWindow *win);
+	void onWindowChanged(QQuickWindow* window);
 
+public slots:
+	void onSynchronizing();
+	void onInvalidating();
+	void onRendering();
+
+	// Public interface.
+public:
+
+	// Protected interface.
+protected:
+	void initializeViewer(const Aspect_Drawable& drawable);
+
+	// Private interface.
 private:
-    occtRenderer *m_renderer;
+
+	// Static interface.
+public:
 };
 
 #endif // OCCTVIEW_H
