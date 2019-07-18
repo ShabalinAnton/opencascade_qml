@@ -3,6 +3,9 @@
 
 #include "OcctView.h"
 
+#include <BRepPrimAPI_MakeCone.hxx>
+#include <AIS_Shape.hxx>
+
 OcctView::OcctView(QQuickItem* parent) :
 	QQuickItem(parent)
 {
@@ -101,4 +104,30 @@ void OcctView::initializeViewer(const Aspect_Drawable& drawable)
 	m_view->SetImmediateUpdate(Standard_False);
 	m_view->SetWindow(window, reinterpret_cast<Aspect_RenderingContext>(renderContext));
 	m_view->TriedronDisplay(Aspect_TOTP_RIGHT_LOWER, Quantity_NOC_WHITESMOKE, 0.1, V3d_ZBUFFER);
+
+	// Create a demo scene.
+	this->createDemoScene();
+}
+
+void OcctView::createDemoScene()
+{
+	// Create a bisque cone at [0, 10, 0].
+	gp_Ax2 axis;
+	axis.SetLocation(gp_Pnt(0.0, 10.0, 0.0));
+
+	TopoDS_Shape bisqueCone = BRepPrimAPI_MakeCone(axis, 3.0, 1.5, 5.0).Shape();
+	Handle(AIS_Shape) bisqueConeShape = new AIS_Shape(bisqueCone);
+	bisqueConeShape->SetColor(Quantity_NOC_BISQUE);
+
+	// Create a chocolate cone at [8, 10, 0].
+	axis.SetLocation(gp_Pnt(8.0, 10.0, 0.0));
+	TopoDS_Shape chocoCone = BRepPrimAPI_MakeCone(axis, 3.0, 0.0, 5.0).Shape();
+	Handle(AIS_Shape) chocoConeShape = new AIS_Shape(chocoCone);
+	chocoConeShape->SetColor(Quantity_NOC_CHOCOLATE);
+
+	m_context->Display(bisqueConeShape, Standard_True);
+	m_context->Display(chocoConeShape, Standard_True);
+
+	// Fit all into the view.
+	m_view->FitAll();
 }

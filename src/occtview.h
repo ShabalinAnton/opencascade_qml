@@ -57,6 +57,7 @@ protected:
 
 	// Private interface.
 private:
+	void createDemoScene();
 
 	// Static interface.
 public:
