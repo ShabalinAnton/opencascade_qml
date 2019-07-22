@@ -67,7 +67,10 @@ void OcctView::onRendering()
 	m_mutex.unlock();
 
 	// Redraw the view.
+	// NOTE: MustBeResized is called here, due to a bug that causes the background to
+	//       go white, when hovering a MenuBar (and possibly other top-level QML items).
 	m_view->Redraw();
+	m_view->MustBeResized();
 }
 
 void OcctView::initializeViewer(const Aspect_Drawable& drawable)
