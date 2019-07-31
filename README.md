@@ -1,22 +1,27 @@
-# opencascade_qml
-Simple example integrating OpenCASCADE into QML
+# Using OpenCascade in QtQuick 2
 
-<img src="https://3.downloader.disk.yandex.ru/disk/62b21206b9094c5d238f9ff6cf3320c39b971ba3721c7e480443e5c02cadd6b3/58fddfd3/tyEd1qUUR2oIUHfmv99e6xCgFvF0LyL5ReP5vfV0qB88SRIn18fy8uDTGzxY6aUxUWgafoybVHD6jPTHXnxuJw%3D%3D?uid=0&filename=2017-04-24_15-18-45.png&disposition=inline&hash=&limit=0&content_type=image%2Fpng&fsize=83988&hid=b899c40dda0125cd41ee1e792ba9b598&media_type=image&tknv=v2&etag=01359b55d673c7bba0acf6b4481c4c68"/>
+This project is a fork of the example project of [Anton Shabalin](https://github.com/ShabalinAnton), which was based on [Guiseppe D'Angelos](https://github.com/KDAB/integrating-qq2-with-opengl) QQ2/OpenGL example and the official OCCT AndriodQt sample code.
 
-I've used examples from:
-OpenCASCADE/samples/Qt/AndroidQt and from this repository: 
-https://github.com/KDAB/integrating-qq2-with-opengl
+<div style="text-align:center;">
+<img src="./img/screenshot.jpg" alt="Example Screenshot" />
+</div>
 
+# Improvements
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Lesser General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+The fork improves the example regarding the following points:
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Lesser General Public License for more details.
+- Largely simplified codebase compared to the original version.
+- Switched implementation to use `QQmlApplicationEngine` and `ApplicationWindow`.
+- Support for recent versions of OpenCascade (7.3.0) and Qt (5.12).
+- Removed dependency on private headers (allows for dynamic linking).
+- Build tested in Visual Studio 2019 (vc150), 2017 (vc141) and Qt Creator (4.9.2). 
 
-You should have received a copy of the GNU Lesser General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
+Note that platforms other than Windows may require slight modifications, mainly replacing native calls to `wglGetCurrentDC` and `wglGetCurrentContext` and respective include of `<windows.h>` with appropriate APIs.
+
+## Removed from original example
+
+I've removed all mouse interactivity, to keep the example simple. It should be pretty straightforward to wire up the mouse events to OCCT transforms. The AndroidQt sample provides a good starting point. 
+
+## License 
+
+[GNU Lesser General Public License 3.0](./LICENSE)

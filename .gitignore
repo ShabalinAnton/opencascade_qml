@@ -1,0 +1,13 @@
+.vs
+.vscode
+
+/*/debug
+/*/release
+/*/x64
+/*/x86
+
+*.sln
+*.vcxproj
+*.vcxproj.*
+
+.qmake.stash
